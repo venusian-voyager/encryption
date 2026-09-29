@@ -1,0 +1,39 @@
+{
+    "name": "venusian-voyager/encryption",
+    "description": "The Voyager Encryption package.",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Angel Gonzalez",
+            "email": "angel@projectsaturnstudios.com"
+        },
+        {
+            "name": "Taylor Otwell"
+        }
+    ],
+    "require": {
+        "php": "^8.4|^8.5",
+        "ext-hash": "*",
+        "ext-mbstring": "*",
+        "ext-openssl": "*",
+        "venusian-voyager/contracts": "^0.9.0",
+        "venusian-voyager/nuts-and-bolts": "^0.9.0"
+    },
+    "suggest": {
+        "laravel/serializable-closure": "Signs serialized closures with the app key (^2.0)."
+    },
+    "autoload": {
+        "psr-4": {
+            "Voyager\\Encryption\\": ""
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-main": "0.9.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "minimum-stability": "dev"
+}
