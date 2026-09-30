@@ -12,12 +12,14 @@
         }
     ],
     "require": {
-        "ext-hash": "*",
-        "ext-mbstring": "*",
-        "ext-openssl": "*",
         "php": "^8.4|^8.5",
-        "venusian-voyager/contracts": "^0.8.0",
-        "venusian-voyager/nuts-and-bolts": "^0.8.0"
+        "ext-hash": "*",
+        "ext-openssl": "*",
+        "venusian-voyager/contracts": "^0.10.0",
+        "venusian-voyager/nuts-and-bolts": "^0.10.0"
+    },
+    "suggest": {
+        "laravel/serializable-closure": "Signs serialized closures with the app key (^2.0)."
     },
     "autoload": {
         "psr-4": {
@@ -26,13 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.8.x-dev"
-        },
-        "venusian": {
-            "upstream": "laravel/framework",
-            "upstream-ref": "v12.67.0",
-            "upstream-path": "src/Illuminate/Encryption",
-            "ported-at": "2026-08-19"
+            "dev-main": "0.10.x-dev"
         }
     },
     "config": {

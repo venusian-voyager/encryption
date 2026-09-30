@@ -2,17 +2,13 @@
 
 namespace Voyager\Encryption;
 
-use Voyager\NutsAndBolts\ServiceProvider;
+use Voyager\Contracts\Core\FrameworkCore;
 use Voyager\NutsAndBolts\DataObjects\Str;
+use Voyager\NutsAndBolts\ServiceProvider;
 use Laravel\SerializableClosure\SerializableClosure;
 
 class EncryptionServiceProvider extends ServiceProvider
 {
-    /**
-     * Register the service provider.
-     *
-     * @return void
-     */
     public function register(): void
     {
         $this->registerEncrypter();
@@ -20,27 +16,23 @@ class EncryptionServiceProvider extends ServiceProvider
     }
 
     /**
-     * Register the encrypter.
-     *
-     * @return void
+     * The encrypter, on app.key and app.cipher, falling back on app.previous_keys when decrypting.
      */
     protected function registerEncrypter(): void
     {
-        $this->app->singleton('encrypter', function ($app) {
+        $this->app->registerSingleton('encrypter', function (FrameworkCore $app): Encrypter {
             $config = $app->make('config')->get('app');
 
-            return (new Encrypter($this->parseKey($config), $config['cipher']))
+            return new Encrypter($this->parseKey($config), $config['cipher'])
                 ->previousKeys(array_map(
-                    fn ($key) => $this->parseKey(['key' => $key]),
-                    $config['previous_keys'] ?? []
+                    fn (string $key): string => $this->parseKey(['key' => $key]),
+                    $config['previous_keys'] ?? [],
                 ));
         });
     }
 
     /**
-     * Configure Serializable Closure signing for security.
-     *
-     * @return void
+     * Signs serialized closures with the app key, so a worker only runs closures this app made.
      */
     protected function registerSerializableClosureSecurityKey(): void
     {
@@ -54,10 +46,10 @@ class EncryptionServiceProvider extends ServiceProvider
     }
 
     /**
-     * Parse the encryption key.
+     * The key itself: a "base64:" key is decoded.
      *
-     * @param  array  $config
-     * @return string
+     * @param array<string, mixed> $config
+     * @throws MissingAppKeyException
      */
     protected function parseKey(array $config): string
     {
@@ -69,19 +61,17 @@ class EncryptionServiceProvider extends ServiceProvider
     }
 
     /**
-     * Extract the encryption key from the given configuration.
-     *
-     * @param  array  $config
-     * @return string
-     *
-     * @throws \Voyager\Encryption\MissingAppKeyException
+     * @param array<string, mixed> $config
+     * @throws MissingAppKeyException
      */
     protected function key(array $config): string
     {
-        return tap($config['key'], function ($key) {
-            if (empty($key)) {
-                throw new MissingAppKeyException;
-            }
-        });
+        $key = $config['key'] ?? null;
+
+        if (! is_string($key) || $key === '') {
+            throw new MissingAppKeyException();
+        }
+
+        return $key;
     }
 }
