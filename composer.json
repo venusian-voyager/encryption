@@ -15,8 +15,8 @@
         "php": "~8.4.27||^8.5.12",
         "ext-hash": "*",
         "ext-openssl": "*",
-        "venusian-voyager/contracts": "^0.10.0",
-        "venusian-voyager/nuts-and-bolts": "^0.10.0"
+        "venusian-voyager/contracts": "^0.11.0",
+        "venusian-voyager/nuts-and-bolts": "^0.11.0"
     },
     "suggest": {
         "laravel/serializable-closure": "Signs serialized closures with the app key (^2.0)."
@@ -28,7 +28,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-main": "0.10.x-dev"
+            "dev-main": "0.11.x-dev"
         }
     },
     "config": {
